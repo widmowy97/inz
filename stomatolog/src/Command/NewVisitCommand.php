@@ -29,24 +29,34 @@ class NewVisitCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Visit reminder');
+            ->setDescription('Send email reminding about a visit');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
-        $visits = $this->visitRepository->findVisit(new \DateTime());
+        try {
+            $visits = $this->visitRepository->findAll();
 
-        /** @var Visit $visit */
-        foreach ($visits as $visit){
-            $message = (new \Swift_Message('Hello Email'))
-                ->setTo($visit->getPatient()->getEmail())
-                ->setBody('Zapraszamy na wizytę')
-            ;
-        $this->mailer->send($message);
+            /** @var Visit $visit */
+            foreach ($visits as $visit){
+                $message = (new \Swift_Message('Hello Email'))
+                    ->setTo($visit->getPatient()->getEmail())
+                    ->setBody('Zapraszamy na wizytę')
+                ;
+                $this->mailer->send($message);
+
+                $io->success('Reminder is going to be sent to: '.$visit->getPatient());
+            }
+
+
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $io->success('Failure: '.$e->getMessage());
+
+            return Command::FAILURE;
         }
 
-        $io->success(sprintf('Success send %d emails', count($visits)));
     }
 }
