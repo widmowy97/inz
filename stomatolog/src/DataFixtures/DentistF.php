@@ -10,10 +10,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class DentistF extends Fixture implements DependentFixtureInterface
 {
     private $passwordEncoder;
+
+    public const DENTIST1 = 'Dentist Justyna Wrona';
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -28,11 +29,12 @@ class DentistF extends Fixture implements DependentFixtureInterface
         $dentist->setPassword($this->passwordEncoder->encodePassword($dentist, 'pass'));
         $dentist->setFirstName('Justyna');
         $dentist->setLastName('Wrona');
-        $dentist->setSpecialization($this->getReference(SpecializationF::Ref_Kanalowe));
+        $dentist->setSpecialization($this->getReference(SpecializationF::REF_KANALOWE));
+
         $manager->persist($dentist);
-
-
         $manager->flush();
+
+        $this->addReference(self::DENTIST1, $dentist);
     }
 
     public function getDependencies()
