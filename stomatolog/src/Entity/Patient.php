@@ -28,8 +28,6 @@ protected $FirstName;
      */
     private $LastName;
 
-
-
     /**
      * @return string
      */

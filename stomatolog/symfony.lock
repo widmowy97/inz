@@ -2,6 +2,12 @@
     "composer/package-versions-deprecated": {
         "version": "1.10.99"
     },
+    "cron/cron": {
+        "version": "1.4.2"
+    },
+    "cron/cron-bundle": {
+        "version": "2.4.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -111,6 +117,15 @@
     },
     "egulias/email-validator": {
         "version": "2.1.18"
+    },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
+    "knplabs/knp-components": {
+        "version": "v2.4.2"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.3.0"
     },
     "laminas/laminas-code": {
         "version": "3.4.1"

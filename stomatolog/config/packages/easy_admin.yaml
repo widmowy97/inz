@@ -4,13 +4,13 @@ easy_admin:
         datetime: 'd/m/Y H:i:'
     design:
         menu:
-            - { entity: 'Dentist', icon: 'user' }
-            - { entity: 'Patient', icon: 'user-nurse' }
-            - { entity: 'Specialization', icon: 'tag' }
+            - { entity: 'Dentist', icon: 'user-nurse' }
+            - { entity: 'Patient', icon: 'user' }
             - { entity: 'Visit', icon: 'calendar' }
 
 
     entities:
+
         Dentist:
             label: 'Stomatolodzy'
             class: App\Entity\Dentist
@@ -18,12 +18,10 @@ easy_admin:
                 fields:
                 - 'FirstName'
                 - 'LastName'
-                - 'specialization.Name'
             show:
                 fields:
                 - 'FirstName'
                 - 'LastName'
-                - 'specialization'
                 - { property: 'visits', template: 'visits.html.twig'}
 
         Patient:
@@ -43,9 +41,17 @@ easy_admin:
                     - {property: 'LastName'}
         Specialization:
             class: App\Entity\Specialization
+            list:
+                - { property: 'visits', template: 'visits.html.twig'}
         Visit:
             class: App\Entity\Visit
-    list:
-        actions: ['show']
+   
+            edit:
+                fields:
+                    - {property: 'descriptions'}
+
+
+
+
 
 

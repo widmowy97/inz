@@ -28,12 +28,6 @@ class Dentist extends User
      */
     private $LastName;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Specialization")
-     * @var Specialization
-     */
-    private $specialization;
-
 
     /**
      * @return string
@@ -51,13 +45,7 @@ class Dentist extends User
         $this->LastName = $LastName;
     }
 
-    /**
-     * @return Specialization
-     */
-    public function getSpecialization(): ?Specialization
-    {
-        return $this->specialization;
-    }
+
 
     /**
      * @param Specialization $specialization
@@ -68,7 +56,7 @@ class Dentist extends User
     }
     public function __toString(): string
     {
-        return $this->FirstName . ' ' . $this->LastName . ' - ' . $this->specialization->getName();
+        return $this->FirstName . ' ' . $this->LastName;
     }
 
     /**
