@@ -5,27 +5,16 @@ namespace App\Entity;
 
 use App\Partial\IdAwareInterface;
 use App\Partial\IdAwareTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Doctrine\ORM\PersistentCollection;
-
-// use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Visit
  * @package App\Entity
  * @ORM\Entity()
- * @ORM\Table(
- * uniqueConstraints={
- *     @UniqueConstraint(
- *         name="one_visit_per_patient_key",
- *         columns={"start_date", "dentist_id"}
- *     )
- * }
- * )
- * UniqueEntity(fields={"StartDate",  "dentist",}, message="Proszę wybrać inny termin wizyty")
+ * @ORM\Table(uniqueConstraints={@UniqueConstraint(columns={"start_date", "dentist_id"})})
+ * @UniqueEntity(fields={"StartDate",  "dentist"}, message="Proszę wybrać inny termin wizyty")
  */
 
 class Visit implements IdAwareInterface
@@ -43,17 +32,6 @@ class Visit implements IdAwareInterface
      * @var \DateTime
      */
     private $EndDate;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Description", mappedBy="visit")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $descriptions;
-
-    public function __construct()
-    {
-        $this->contents = new ArrayCollection();
-    }
 
     /**
      *@ORM\ManyToOne(targetEntity="App\Entity\Patient")
@@ -132,43 +110,11 @@ class Visit implements IdAwareInterface
         $this->patient = $patient;
     }
 
-
     public function __toString()
     {
         return $this->StartDate->format('Y-m-d h:i') . ' '
             . $this->EndDate->format('Y-m-d h:i') . ' '
             . $this->patient->__toString();
     }
-
-    /**
-     * @return Collection\Descriptions[]
-     */
-    public function getDescriptions():PersistentCollection
-    {
-        return $this->descriptions;
-    }
-
-    public function addDescription(Description $content): self
-    {
-        if (!$this->descriptions->contains($content)) {
-            $this->descriptions[] =$content;
-            $content->setVisit($this);
-        }
-        return $this;
-    }
-
-    public function  removeDescription(Description $content): self
-    {
-        if ($this->descriptions->contains($content)) {
-            $this->descriptions->removeElement($content);
-            if ($content->getVisit() == $this) {
-                $content->setDescriptions(null);
-            }
-        }
-
-        return $this;
-    }
-
-
 
 }
